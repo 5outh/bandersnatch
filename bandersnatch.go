@@ -1,23 +1,21 @@
-package main
+package bandersnatch
 
 import (
     "net/http"
-    "fmt"
     "io/ioutil"
     "encoding/xml"
     "bandersnatch/types"
+    "strconv"
 )
 
-func main() {
-    resp, _ := http.Get("http://www.boardgamegeek.com/xmlapi/boardgame/35424")
+func GetBoardGame(boardGameId int) *types.BoardGames {
+    resp, _ := http.Get("http://www.boardgamegeek.com/xmlapi/boardgame/" + strconv.Itoa(boardGameId))
 
     contents, _ := ioutil.ReadAll(resp.Body)
-
-    // xml := string(contents[:])
 
     var boardGames types.BoardGames
 
 	xml.Unmarshal(contents, &boardGames)
 
-    fmt.Printf("%+v", boardGames)
+    return &boardGames
 }
