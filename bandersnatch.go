@@ -4,7 +4,7 @@ import (
     "net/http"
     "io/ioutil"
     "encoding/xml"
-    "bandersnatch/types"
+    "github.com/5outh/bandersnatch/types"
     "strconv"
 )
 

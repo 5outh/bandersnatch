@@ -1,7 +1,7 @@
 package main
 
 import (
-    "bandersnatch"
+    "github.com/5outh/bandersnatch"
     "fmt"
 )
 
