@@ -10,7 +10,9 @@ func main() {
 
     fmt.Printf("%+v\n\n", boardGames)
 
-    settlersSearch, _ := bandersnatch.GetSearch("Settlers of Catan")
+    request, _ := bandersnatch.NewSearchRequest("Settlers of Catan")
+
+    settlersSearch, _ := bandersnatch.GetSearch(request)
 
     fmt.Printf("%+v", settlersSearch)
 }

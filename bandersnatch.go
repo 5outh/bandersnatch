@@ -7,7 +7,44 @@ import (
     "encoding/xml"
     "github.com/5outh/bandersnatch/types/responses"
     "strconv"
+    "fmt"
 )
+
+type SearchRequest struct {
+    SearchTerm string
+    Exact bool
+}
+
+func NewSearchRequest (searchTerm string, options ...func(*SearchRequest) error) (*SearchRequest, error) {
+    searchRequest := &SearchRequest{}
+
+    // Default options
+    searchRequest.Exact = false
+    searchRequest.SearchTerm = searchTerm
+
+	for _, op := range options {
+		err := op(searchRequest)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return searchRequest, nil
+}
+
+// func OptionTemperature(t Celsius) func(f *Foobar) error {
+// 	return func(f *Foobar) error {
+// 		f.temperature = t
+// 		return nil
+// 	}
+// }
+
+func OptionExact(exact bool) func (searchRequest *SearchRequest) error {
+    return func (searchRequest *SearchRequest) error {
+        searchRequest.Exact = true
+        return nil
+    }
+}
 
 func GetBoardGame(boardGameId int) (*responses.BoardGameResponse, error) {
     resp, err := http.Get("http://www.boardgamegeek.com/xmlapi/boardgame/" + strconv.Itoa(boardGameId))
@@ -25,8 +62,28 @@ func GetBoardGame(boardGameId int) (*responses.BoardGameResponse, error) {
     return &boardGameResponse, nil
 }
 
-func GetSearch(searchTerm string) (*responses.SearchResponse, error) {
-    resp, err := http.Get("http://www.boardgamegeek.com/xmlapi/search?search=" + url.QueryEscape(searchTerm))
+func GetSearch(searchRequest *SearchRequest) (*responses.SearchResponse, error) {
+    url := &url.URL{
+        Scheme: "http",
+        Host: "boardgamegeek.com",
+        Path: "/xmlapi/search",
+    }
+
+    q := url.Query()
+
+    q.Set("search", (*searchRequest).SearchTerm)
+
+    if (*searchRequest).Exact {
+        q.Set("exact", "1")
+    }
+
+    url.RawQuery = q.Encode()
+
+    apiUrl := url.String()
+
+    fmt.Println(apiUrl)
+
+    resp, err := http.Get(apiUrl)
 
     if (err != nil) {
         return nil, err
