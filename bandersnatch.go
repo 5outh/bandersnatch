@@ -7,7 +7,6 @@ import (
     "encoding/xml"
     "github.com/5outh/bandersnatch/types/responses"
     "strconv"
-    "fmt"
 )
 
 type SearchRequest struct {
@@ -31,13 +30,6 @@ func NewSearchRequest (searchTerm string, options ...func(*SearchRequest) error)
 
 	return searchRequest, nil
 }
-
-// func OptionTemperature(t Celsius) func(f *Foobar) error {
-// 	return func(f *Foobar) error {
-// 		f.temperature = t
-// 		return nil
-// 	}
-// }
 
 func OptionExact(exact bool) func (searchRequest *SearchRequest) error {
     return func (searchRequest *SearchRequest) error {
@@ -80,8 +72,6 @@ func GetSearch(searchRequest *SearchRequest) (*responses.SearchResponse, error) 
     url.RawQuery = q.Encode()
 
     apiUrl := url.String()
-
-    fmt.Println(apiUrl)
 
     resp, err := http.Get(apiUrl)
 
