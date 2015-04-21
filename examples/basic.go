@@ -6,7 +6,11 @@ import (
 )
 
 func main() {
-    boardGames := bandersnatch.GetBoardGame(30000)
+    boardGames, _ := bandersnatch.GetBoardGame(30000)
 
-    fmt.Printf("%+v", boardGames)
+    fmt.Printf("%+v\n\n", boardGames)
+
+    settlersSearch, _ := bandersnatch.GetSearch("Settlers of Catan")
+
+    fmt.Printf("%+v", settlersSearch)
 }
