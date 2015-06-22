@@ -14,7 +14,7 @@ func main() {
         "Dominion",
         bandersnatch.OptionExact(true) )
 
-    settlersSearch, _ := bandersnatch.GetSearch(request)
+    res, _ := bandersnatch.GetSearch(request)
 
-    fmt.Printf("%+v", settlersSearch)
+    fmt.Printf("%+v", res)
 }
